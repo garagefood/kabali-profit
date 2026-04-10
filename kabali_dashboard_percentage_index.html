@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kabali Financial Dashboard</title>
+<style>
+body{font-family:Arial;background:#f4f6f8;padding:40px}
+.container{max-width:1000px;margin:auto;background:white;padding:30px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1)}
+h1{text-align:center}
+.tabs{display:flex;margin-bottom:20px}
+.tab{padding:10px 20px;background:#ddd;cursor:pointer;margin-right:5px;border-radius:5px}
+.tab.active{background:#333;color:white}
+.section{display:none}
+.section.active{display:block}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}
+input{width:140px;padding:6px}
+button{margin-top:10px;padding:8px 16px}
+.percent{color:#666}
+.result{font-weight:bold;font-size:18px;margin-top:15px}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Kabali Financial Dashboard</h1>
+
+<div class="tabs">
+<div class="tab active" onclick="showTab('hennur')">Hennur March</div>
+<div class="tab" onclick="showTab('koramangala')">Koramangala March</div>
+</div>
+
+<div id="hennur" class="section active">
+
+<h2>Hennur March</h2>
+
+<table>
+<tr><th>Category</th><th>Amount</th><th>% of Sales</th></tr>
+
+<tr>
+<td>Total Sales</td>
+<td><input id="h_sales"></td>
+<td></td>
+</tr>
+
+<tr>
+<td>Material Expense</td>
+<td><input id="h_material"></td>
+<td class="percent" id="hp_material"></td>
+</tr>
+
+<tr>
+<td>Salaries</td>
+<td><input id="h_salary"></td>
+<td class="percent" id="hp_salary"></td>
+</tr>
+
+<tr>
+<td>Rent</td>
+<td><input id="h_rent"></td>
+<td class="percent" id="hp_rent"></td>
+</tr>
+
+<tr>
+<td>Electricity</td>
+<td><input id="h_electric"></td>
+<td class="percent" id="hp_electric"></td>
+</tr>
+
+<tr>
+<td>Other Expense</td>
+<td><input id="h_other"></td>
+<td class="percent" id="hp_other"></td>
+</tr>
+
+</table>
+
+<button onclick="calcHennur()">Calculate</button>
+
+<div class="result">
+Total Expense: ₹<span id="h_total"></span><br>
+Profit: ₹<span id="h_profit"></span>
+</div>
+
+</div>
+
+
+<div id="koramangala" class="section">
+
+<h2>Koramangala March</h2>
+
+<table>
+<tr><th>Category</th><th>Amount</th><th>% of Sales</th></tr>
+
+<tr>
+<td>Total Sales</td>
+<td><input id="k_sales"></td>
+<td></td>
+</tr>
+
+<tr>
+<td>Material Expense</td>
+<td><input id="k_material"></td>
+<td class="percent" id="kp_material"></td>
+</tr>
+
+<tr>
+<td>Cash Expense</td>
+<td><input id="k_cash_exp"></td>
+<td class="percent" id="kp_cash"></td>
+</tr>
+
+<tr>
+<td>Other Expense</td>
+<td><input id="k_other"></td>
+<td class="percent" id="kp_other"></td>
+</tr>
+
+<tr>
+<td>Electricity Bill</td>
+<td><input id="k_electric"></td>
+<td class="percent" id="kp_electric"></td>
+</tr>
+
+<tr>
+<td>Water Bill</td>
+<td><input id="k_water"></td>
+<td class="percent" id="kp_water"></td>
+</tr>
+
+<tr>
+<td>Hennur Expense</td>
+<td><input id="k_hennur"></td>
+<td class="percent" id="kp_hennur"></td>
+</tr>
+
+</table>
+
+<button onclick="calcKoramangala()">Calculate</button>
+
+<div class="result">
+Total Expense: ₹<span id="k_total"></span><br>
+Profit: ₹<span id="k_profit"></span>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function showTab(tab){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"))
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"))
+document.getElementById(tab).classList.add("active")
+event.target.classList.add("active")
+}
+
+function percent(value,sales){
+if(!sales) return ""
+return ((value/sales)*100).toFixed(1)+"%"
+}
+
+function calcHennur(){
+let sales = Number(document.getElementById("h_sales").value)
+let m = Number(document.getElementById("h_material").value)
+let s = Number(document.getElementById("h_salary").value)
+let r = Number(document.getElementById("h_rent").value)
+let e = Number(document.getElementById("h_electric").value)
+let o = Number(document.getElementById("h_other").value)
+
+let total = m+s+r+e+o
+let profit = sales-total
+
+document.getElementById("h_total").innerText=total
+document.getElementById("h_profit").innerText=profit
+
+document.getElementById("hp_material").innerText=percent(m,sales)
+document.getElementById("hp_salary").innerText=percent(s,sales)
+document.getElementById("hp_rent").innerText=percent(r,sales)
+document.getElementById("hp_electric").innerText=percent(e,sales)
+document.getElementById("hp_other").innerText=percent(o,sales)
+}
+
+function calcKoramangala(){
+let sales = Number(document.getElementById("k_sales").value)
+let m = Number(document.getElementById("k_material").value)
+let c = Number(document.getElementById("k_cash_exp").value)
+let o = Number(document.getElementById("k_other").value)
+let e = Number(document.getElementById("k_electric").value)
+let w = Number(document.getElementById("k_water").value)
+let h = Number(document.getElementById("k_hennur").value)
+
+let total = m+c+o+e+w+h
+let profit = sales-total
+
+document.getElementById("k_total").innerText=total
+document.getElementById("k_profit").innerText=profit
+
+document.getElementById("kp_material").innerText=percent(m,sales)
+document.getElementById("kp_cash").innerText=percent(c,sales)
+document.getElementById("kp_other").innerText=percent(o,sales)
+document.getElementById("kp_electric").innerText=percent(e,sales)
+document.getElementById("kp_water").innerText=percent(w,sales)
+document.getElementById("kp_hennur").innerText=percent(h,sales)
+}
+
+</script>
+
+</body>
+</html>
